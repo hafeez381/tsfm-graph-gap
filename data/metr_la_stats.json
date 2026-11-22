@@ -1,0 +1,39 @@
+{
+  "T": 34272,
+  "N": 207,
+  "start": "2012-03-01 00:00:00",
+  "end": "2012-06-27 23:55:00",
+  "edges_offdiag": 1515,
+  "edges_symmetric_pairs": 202,
+  "zero_share": 0.08109350825676487,
+  "leading_zeros_unfilled": 66,
+  "split_steps": {
+    "train": 23990,
+    "val": 3428,
+    "test": 6854
+  },
+  "split_days": {
+    "train": 83.3,
+    "val": 11.9,
+    "test": 23.8
+  },
+  "split_windows": {
+    "train": 23691,
+    "val": 3417,
+    "test": 6843
+  },
+  "train_end": 23990,
+  "val_end": 27418,
+  "nbr_size_median": 15.0,
+  "nbr_size_min": 1,
+  "nbr_size_max": 26,
+  "isolated_sensors": [
+    26
+  ],
+  "fraction_windows": {
+    "0.05": 1184,
+    "0.25": 5922,
+    "1.0": 23691
+  },
+  "fraction_5pct_days": 4.11
+}
