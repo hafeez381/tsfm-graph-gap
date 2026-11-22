@@ -18,7 +18,9 @@ shutil.copy(os.path.join(os.path.dirname(found[0]), "COMMIT"), OUT)
 print("commit", open(os.path.join(OUT, "COMMIT")).read().strip(), flush=True)
 
 # Keep Kaggle's preinstalled CUDA torch: install our package and extras without touching it.
-subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-e", f"{CODE}[stgnn,tsfm,patchtst]"], check=True)
+import torch  # noqa: E402  (preinstalled; its build picks the PyG wheel index)
+pyg = f"https://data.pyg.org/whl/torch-{torch.__version__.split('+')[0]}+{torch.version.cuda and 'cu' + torch.version.cuda.replace('.', '') or 'cpu'}.html"
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-f", pyg, "-e", f"{CODE}[stgnn,tsfm,patchtst]"], check=True)
 subprocess.run(["nvidia-smi"])
 env = dict(os.environ, OUT_DIR=OUT, PYTHONPATH=CODE)
 with open(os.path.join(OUT, "env_check.txt"), "w") as f:

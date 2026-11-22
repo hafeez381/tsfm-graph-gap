@@ -6,11 +6,11 @@ A frozen time-series foundation model (Chronos-Bolt Small, TimesFM 2.5) forecast
 
 ```bash
 uv venv -p 3.11 .venv
-uv pip install -p .venv -e ".[stgnn,tsfm,patchtst,dev]"
+uv pip install -p .venv "torch==2.11.0" -e ".[stgnn,tsfm,patchtst,dev]" -f https://data.pyg.org/whl/torch-2.11.0+cpu.html
 .venv/bin/python -m pytest -q
 ```
 
-Versions: torch-spatiotemporal 0.9.5, chronos-forecasting 2.3.2, timesfm 3.0.2, pandas < 3. Every run uses seed 651. Data and training scripts take `--mode smoke` (synthetic data, runs on a laptop) or `--mode full`.
+Versions: torch 2.11 (as on Kaggle), torch-spatiotemporal 0.9.5, chronos-forecasting 2.3.2, timesfm 3.0.2, pandas < 3. Every run uses seed 651. Data and training scripts take `--mode smoke` (synthetic data, runs on a laptop) or `--mode full`.
 
 ## Compute
 

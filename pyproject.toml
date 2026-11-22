@@ -18,7 +18,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-stgnn = ["torch-spatiotemporal==0.9.5"]
+# tsl imports torch_geometric, torch_scatter and torch_sparse; the last two are compiled per torch build,
+# so install them with -f https://data.pyg.org/whl/torch-<torch.__version__>.html (see README).
+stgnn = ["torch-spatiotemporal==0.9.5", "torch_geometric>=2.4", "torch_scatter", "torch_sparse"]
 tsfm = ["chronos-forecasting==2.3.2", "timesfm[torch]==3.0.2"]
 patchtst = ["transformers>=4.40"]
 dev = ["pytest>=8"]
