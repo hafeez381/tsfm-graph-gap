@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsfm-graph-gap"
+version = "0.1.0"
+description = "Does a frozen time-series foundation model need a road graph? A graph attention adapter on cached TSFM outputs."
+requires-python = ">=3.10"
+# torch is not pinned so Kaggle and Colab keep their preinstalled CUDA build.
+dependencies = [
+    "torch>=2.2",
+    "numpy>=1.26",
+    "pandas>=2.0,<3",
+    "scipy>=1.11",
+    "scikit-learn>=1.3",
+    "huggingface_hub>=0.28",
+]
+
+[project.optional-dependencies]
+stgnn = ["torch-spatiotemporal==0.9.5"]
+tsfm = ["chronos-forecasting==2.3.2", "timesfm[torch]==3.0.2"]
+patchtst = ["transformers>=4.40"]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

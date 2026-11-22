@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.DS_Store
+.venv/
+data/
+cache/
+checkpoints/
+*.pt
+*.npy
+kaggle/code/code.tgz
+kaggle/code/COMMIT
+report/
+reports/**/*.pdf
+reports/**/*.aux
+reports/**/*.log
