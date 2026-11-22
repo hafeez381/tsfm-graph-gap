@@ -44,5 +44,12 @@ def fraction_block(train_t: np.ndarray, f: float) -> np.ndarray:
         raise ValueError(f"fraction must be in (0, 1], got {f}")
     n = int(np.floor(f * len(train_t)))
     block = train_t[len(train_t) - n:]
-    assert len(block) == n and (n == 0 or block[-1] == train_t[-1])
+    assert_fraction_block(block, train_t, f)
     return block
+
+
+def assert_fraction_block(block: np.ndarray, train_t: np.ndarray, f: float) -> None:
+    """Raise unless `block` is exactly the last floor(f * n) training windows."""
+    n = int(np.floor(f * len(train_t)))
+    if len(block) != n or not np.array_equal(block, train_t[len(train_t) - n:]):
+        raise AssertionError(f"not the most recent {n} training windows for f={f}")
