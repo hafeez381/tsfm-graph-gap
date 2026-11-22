@@ -4,7 +4,8 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 .venv/
-/data/
+/data/*
+!/data/*_stats.json
 /cache/
 /checkpoints/
 *.pt
