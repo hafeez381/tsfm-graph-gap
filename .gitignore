@@ -4,9 +4,9 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 .venv/
-data/
-cache/
-checkpoints/
+/data/
+/cache/
+/checkpoints/
 *.pt
 *.npy
 kaggle/code/code.tgz
@@ -15,3 +15,6 @@ report/
 reports/**/*.pdf
 reports/**/*.aux
 reports/**/*.log
+kaggle/code/dataset-metadata.json
+/results/skeleton/
+/results/kaggle/
