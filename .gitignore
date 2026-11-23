@@ -13,6 +13,7 @@ __pycache__/
 kaggle/code/code.tgz
 kaggle/code/COMMIT
 report/
+/reports/
 reports/**/*.pdf
 reports/**/*.aux
 reports/**/*.log
