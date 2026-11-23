@@ -1,0 +1,34 @@
+{
+  "dataset": "metr_la",
+  "free_flow_mph": {
+    "median": 66.375,
+    "min": 36.22222137451172,
+    "max": 70.0
+  },
+  "val": {
+    "sensor_windows_scored": 670656,
+    "onset": 25841,
+    "steady": 300434,
+    "onset_share": 0.038530930909437926,
+    "steady_share": 0.4479703454528104
+  },
+  "test": {
+    "sensor_windows_scored": 1279788,
+    "onset": 60495,
+    "steady": 508343,
+    "onset_share": 0.047269547768849215,
+    "steady_share": 0.3972087564502871
+  },
+  "gamma": {
+    "median": 0.058685059307373784,
+    "mean": 0.0671401328696325,
+    "min": -0.12279220676384899,
+    "max": 0.19784986388782444,
+    "share_positive": 0.9371980676328503,
+    "hi_threshold": 0.08951483835639133,
+    "lo_threshold": 0.04000077643796594,
+    "n_hi": 69,
+    "n_lo": 69
+  },
+  "sha256": "843a1138868662b98adc513093349eab871dba24e8f637cefcbe233b85814c26"
+}
