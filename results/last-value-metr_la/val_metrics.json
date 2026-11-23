@@ -1,0 +1,20 @@
+{
+  "split": "val",
+  "n_windows": 3417,
+  "n_sensor_windows": 707319,
+  "n_excluded_no_lookback": 36663,
+  "share_excluded_no_lookback": 0.05183375534942508,
+  "populations": {
+    "all": {
+      "n_targets": 7845714,
+      "mae_h3": 3.2133278700046604,
+      "rmse_h3": 6.001962640454359,
+      "mae_h6": 3.8109516726544697,
+      "rmse_h6": 7.503782313392185,
+      "mae_h12": 4.778066489401889,
+      "rmse_h12": 9.587039178779516,
+      "mae_avg": 3.833714243932054,
+      "rmse_avg": 7.621901922700172
+    }
+  }
+}
