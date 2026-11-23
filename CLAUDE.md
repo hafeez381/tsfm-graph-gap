@@ -22,6 +22,7 @@ If the local path of `dlstg-course` is not known, ask the user once and remember
 ## Working rules
 - `main` is protected. One branch per task (`feat/c13-gwn`), a pull request, merged with a **merge commit**
   (`gh pr merge --merge`), never a rebase or squash: results record the commit sha in `meta.json`.
+  GitHub deletes the branch on merge; then run `git switch main && git pull && git branch -d <branch>` locally.
 - Commit messages: one Conventional-Commits line, `type(scope): summary`. `git add` explicit paths only.
 - Commit the code before the results it produced, then regenerate results at that commit.
 - Every number comes from a file: models write `results/<run>/{split}_preds.npz` and only
