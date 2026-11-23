@@ -1,0 +1,9 @@
+{
+  "git_sha": "186b3750129878c22c8d44fb25dbad22fa356f88",
+  "model": "hist-avg",
+  "dataset": "metr_la",
+  "trained_params": 0,
+  "frozen_params": 0,
+  "fit": "training steps only",
+  "created": "2026-11-23T07:48:13+0500"
+}
