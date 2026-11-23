@@ -1,0 +1,66 @@
+# Pre-registration (guide C5). Frozen by the tag v-prereg before any adapter is scored on test.
+# Any change after the tag is logged in the guide's change log with its reason.
+seed: 651
+
+data:
+  dataset: metr_la
+  split: [0.7, 0.1, 0.2]          # chronological
+  min_history: 288                # every split's windows need a 288-step lookback
+  L: 12
+  L_long: 288
+  H: 12
+  report_horizons: [3, 6, 12]     # 15, 30, 60 min
+  fractions: [0.05, 0.25, 1.0]
+  fraction_rule: most_recent_contiguous_block_before_validation
+  graph: {method: distance, threshold: 0.1, neighbourhood: in_or_out_plus_self}
+
+scoring:
+  omega: observed_target_and_at_least_one_observed_step_in_12_step_lookback
+  bootstrap_day: utc_calendar_day_of_first_target_step
+
+populations:
+  free_flow: 85th_percentile_of_observed_training_speeds
+  onset: every_observed_lookback_ge_0.6v_and_some_observed_target_lt_0.6v
+  steady: every_observed_lookback_and_target_within_10pct_of_observed_lookback_mean
+  overlap: onset_takes_precedence
+  graph_dependence: ridge_self_vs_self_plus_neighbours_lambda_in_[0.1,1,10,100]_chosen_on_validation
+  graph_hi_lo: top_and_bottom_third_of_sensors_by_gamma
+  file: data/metr_la_populations.npz
+  sha256: 843a1138868662b98adc513093349eab871dba24e8f637cefcbe233b85814c26
+
+adapter:                          # Decision 7; Decision 8 values, not tuned on the real cache (see guide change log)
+  m: 64
+  heads: 4
+  layers: 1
+  leaky_slope: 0.2
+  dropout: 0.0
+  head_bias: false
+  zero_init_head: true
+  n_params: 37836
+  train: {opt: adam, lr: 1.0e-3, wd: 0.0, batch_windows: 32, eval_every: 200, max_steps: 20000,
+          patience_evals: 10, loss: masked_mae_all_horizons, select: best_validation_mae}
+
+statistics:                       # Decision 15
+  unit: test_day
+  resamples: 1000
+  ci: 0.95
+  seed: 651
+  gap_closure: {horizon_min: 60, same_fraction_for_adapter_and_graph_wavenet: true, report_denominator_interval: true}
+  spearman: {resample: sensors, exclude_sensors_without_neighbours: true}
+
+robustness:                       # Decision 16
+  drop_frac: [0.1, 0.25, 0.5]
+  edge_frac: [0.25, 0.5]
+  draws: 3
+  draw_seed: 651
+
+failure_analysis_events:          # guide C20
+  rule: largest_zero_shot_bolt_L12_error_at_60min_on_P_onset_test_at_most_one_per_day
+  n_events: 5
+
+predictions:                      # guide §4.1, falsifiers verbatim in the guide
+  H1: zero-shot gap to Graph WaveNet grows with horizon and is largest on P_onset and high-Gamma sensors
+  H2: GAT adapter G >= 0.5 at 60 min on METR-LA, 100%, L = 12
+  H3: GAT minus MLP improvement larger on P_onset than on P_steady
+  H4: at 5%, GAT adapter 60-min MAE below Graph WaveNet at 5%
+  H5: with 25% of sensors dropped, GAT adapter MAE rises less than Graph WaveNet's
