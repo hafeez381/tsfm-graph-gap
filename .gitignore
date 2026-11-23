@@ -19,3 +19,4 @@ reports/**/*.log
 kaggle/code/dataset-metadata.json
 /results/skeleton/
 /results/kaggle/
+/results/**/*_preds.npz
