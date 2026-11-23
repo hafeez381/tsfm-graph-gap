@@ -7,12 +7,55 @@ Code for "Do time-series foundation models need a graph?": a frozen TSFM (Chrono
 plus a small graph attention adapter on its cached outputs, compared with zero-shot, Chronos-2, full
 fine-tuning, PatchTST and Graph WaveNet on METR-LA and PeMS-Bay. Mid report Mon Nov 30, final Tue Dec 22.
 
-The plan lives in a second repository, `dlstg-course` (folder `DLSTG Project/`):
-- `DLSTG Project — Implementation Guide.md`: tasks C0–C23 with owner, wave, Needs line, steps and checks;
-  design decisions; interfaces (§6.2); change log (§0.5); proposed runs (§0.9). Source of truth for what to build.
-- `DLSTG Project — Project Notes.md`: the research notes (findings, theory, open questions). No code.
+## The course repository (`dlstg-course`): plan, notes and theory
 
-If the local path of `dlstg-course` is not known, ask the user once and remember it for the session.
+The plan, the research notes and the course material live in a second GitHub repository,
+`https://github.com/hafeez381/dlstg-course` (private; all three of us have write access). Clone it once,
+next to this repository, for example `git clone https://github.com/hafeez381/dlstg-course.git ~/dlstg-course`.
+If its local path is not known, ask the user once and remember it for the session. Everything below is
+relative to that clone. `git pull` it before reading or editing anything in it.
+
+**It is an Obsidian vault.** The files are Obsidian-flavoured Markdown, written to be read in Obsidian
+(open the clone with "Open folder as vault"). That means wikilinks `[[Note#Heading|text]]`, block links
+`[[#^decision-3]]`, embeds `![[image.png]]`, callouts `> [!info]`, YAML frontmatter, and MathJax math
+`$...$`. Keep that syntax when editing; never convert it to plain Markdown links. File names contain
+an em dash (`DLSTG Project — Implementation Guide.md`): quote paths in the shell.
+
+| Path in `dlstg-course` | What it is | How to use it |
+|---|---|---|
+| `DLSTG Project/DLSTG Project — Implementation Guide.md` | **The plan.** Tasks C0–C23, each with owner, wave, **Needs**, decisions used, steps (checkboxes), verification checks and pitfalls. §0.1 owners, §0.2 dates, §0.5 change log, §0.6 RQs, §0.7 GPU jobs, §0.8 waves and hand-offs, §0.9 proposed runs, §2 notation and equations, §4 design decisions, §5 config, §6.2 file interfaces | Read the whole task before coding and follow it. Its checks are the definition of done. Where the code must differ from the guide, change the guide too (step below) |
+| `DLSTG Project/DLSTG Project — Project Notes.md` | **The research notes**: question, hypotheses, theory per measurement, findings, open questions, proposals, self-check. No code | Patch it with the `dlstg-project-notes` skill after every task or result |
+| `DLSTG Project/DLSTG Project — Background Primer.md`, `DLSTG Project — Research Directions.md` | Why each method works; literature, hypotheses, measurement toolkit | Theory for the project; link to their sections instead of repeating them |
+| `My Notes/DLSTG_Lecture_<n> - <title>.md`, `DLSTG_Paper - Graph WaveNet.md` | The course's lecture notes (the user's) | **Theory comes from here first**: cite the exact heading and quote the lecture verbatim |
+| `DLSTG Project/papers/*.pdf`, `Instructor Notes/` | Project papers; instructor slides and readings | Read for anything the lecture notes do not cover |
+| `DLSTG Project/Proposal Concise/`, `proposal/` | The submitted proposal | The source of `[FIXED — P]` values in the guide |
+| `attachments/` | Images used by the notes | See "Images" below |
+
+**Following the guide.**
+- A task's ID (C3, C6a) never changes; cite it in branch names (`feat/c13-gwn`), PR titles and commits.
+- Values tagged `[FIXED — B]` (course brief) or `[FIXED — P]` (submitted proposal) are not ours to change.
+  `[YOURS]` values and design decisions can change, but only with a change-log row (date, change, why, who).
+- File formats between people are the interfaces of §6.2. Do not change one without telling the team.
+- When a task is done: tick its checkboxes, and if a date, decision, check or interface changed, edit that
+  place in the guide and add a change-log row. Commit with `docs(project): <summary>` and push the same day.
+
+**Theory.** For any concept a task or a note needs, look in `My Notes/` first. List a note's headings with
+`grep -n "^#" "My Notes/<file>.md"` and link the exact heading (Obsidian drops colons from heading links):
+`[[DLSTG_Lecture_7 - Graph Neural Networks#6.4 GCN versus GAT — a dynamic adjacency|L7 §6.4]]`. Quote the
+lecture's own sentence or formula. Then the Background Primer and Research Directions, then the papers.
+
+**Links that will not open in your clone.** Some notes link to the user's private notes outside this
+repository (`Assignments/…`, `CS6304 ATML/…`) and embed images by the user's vault path
+(`![[03 - Attachments/<name>]]`; copies of those images are in `attachments/`). Leave those links as they
+are: they resolve in the user's vault. Never create the missing files or rewrite those links.
+
+**Images.** To add a figure to a note, save it in `attachments/` and embed it by bare file name,
+`![[DLSTG_<topic>_<name>.png]]`, which resolves both in a clone and in the user's vault.
+
+**Checking an edit.** Run `python3 -I .claude/skills/dlstg-project-notes/scripts/linkcheck.py "<note>.md"`
+(from this repository, on the file in your `dlstg-course` clone). It reports broken links, headings, block
+ids, uneven tables and unbalanced math. In a clone it will also list the private links above; only new
+problems need fixing.
 
 ## Before starting a task
 1. `git pull` in both repos.

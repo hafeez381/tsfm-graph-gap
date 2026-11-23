@@ -59,11 +59,17 @@ Ideas and decisions go into the notes or the guide, never only into the chat rep
 - **Voice.** Plain, short sentences. Each paragraph and list item opens with a sentence that states its point. Bold lead phrases, tables for comparisons, one idea per bullet. No filler, no hype ("significantly", "crucially") unless a test backs it.
 - **One seed is a pilot.** With seed 651 only, say "one seed" next to every comparison and do not call a difference significant unless the paired day bootstrap (guide Decision 15) was run on it.
 
+## Images and links that only resolve in Abdul's vault
+
+- To add a figure, save it in `attachments/` of `dlstg-course` and embed it by bare file name, `![[DLSTG_<topic>_<name>.png]]`.
+- Existing embeds of the form `![[03 - Attachments/<name>]]` and links into `Assignments/…` or `CS6304 ATML/…` point at Abdul's private vault. They do not open in a clone; leave them unchanged and never create the missing files.
+
 ## Rendering checklist (Obsidian)
 
 - YAML frontmatter is the first line and parses.
 - Every table has a blank line above it, its `|---|` separator on its own line, equal column counts, and `\|` for any `|` inside a cell (wikilinks with an alias included).
 - Every `[[note#heading]]` target exists in the current file (check with grep).
+- `python3 -I .claude/skills/dlstg-project-notes/scripts/linkcheck.py "<note>.md"` (run from `tsfm-graph-gap`) reports no new problems; the private links above are expected in a clone.
 - Math: no unmatched `$`; no bare `_` or `*` outside math.
 - Callouts: every line of a callout body starts with `> `; the self-check is collapsed, `> [!question]- Self-check`.
 - Block ids (`^eq-3`) sit on their own line after the closing `$$`.
