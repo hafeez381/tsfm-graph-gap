@@ -31,7 +31,8 @@ def test_build_split_writes_cache_with_expected_shapes(tmp_path):
     M = np.ones((T, N), dtype=np.uint8)
     t = np.arange(20, 25, dtype=np.int64)                              # 5 windows
 
-    out = build_cache.build_split(pipeline, X, M, t, str(tmp_path / "cache"), batch_series=8, time_first=3)
+    out = build_cache.build_split(pipeline, X, M, t, str(tmp_path / "cache"), L=12,
+                                   encoder_id="bolt-L12", batch_series=8, time_first=3)
 
     arrays = out["arrays"]
     n = len(t)
@@ -39,15 +40,33 @@ def test_build_split_writes_cache_with_expected_shapes(tmp_path):
     assert arrays["y0"].shape == (n, N, 12) and np.allclose(arrays["y0"], 42.0)
     assert arrays["obs"].all()                                         # every step observed
     assert np.array_equal(np.asarray(arrays["t"]), t)
+    assert "h_last" not in arrays                                      # only the bolt-L288 cache stores it
     assert out["manifest"]["encoder"] == "bolt-L12"
     assert out["timing"]["windows"] >= 3                                # the fake pipeline is near-instant
+
+
+def test_build_split_l288_also_writes_h_last(tmp_path):
+    pipeline = _FakePipeline()
+    bolt._wrap_encode(pipeline)
+    rng = np.random.default_rng(0)
+    T, N = 400, 2
+    X = (60 + rng.normal(0, 1, (T, N))).astype(np.float32)
+    M = np.ones((T, N), dtype=np.uint8)
+    t = np.arange(300, 302, dtype=np.int64)
+
+    out = build_cache.build_split(pipeline, X, M, t, str(tmp_path / "cache"), L=288,
+                                   encoder_id="bolt-L288", h_last=True, batch_series=4, time_first=1)
+
+    arrays = out["arrays"]
+    assert arrays["h_last"].shape == (len(t), N, bolt.D)
+    assert "h_last" in out["manifest"]["sha256"]
 
 
 def test_lookback_orders_oldest_first_most_recent_last():
     X = np.arange(40.0).reshape(20, 2)
     M = np.ones_like(X, dtype=np.uint8)
     t = np.array([15])
-    x, m = build_cache._lookback(X, M, t)
-    assert x.shape == (1, 2, build_cache.L)
-    assert x[0, 0, -1] == X[15, 0] and x[0, 0, 0] == X[15 - build_cache.L + 1, 0]
+    x, m = build_cache._lookback(X, M, t, L=12)
+    assert x.shape == (1, 2, 12)
+    assert x[0, 0, -1] == X[15, 0] and x[0, 0, 0] == X[15 - 12 + 1, 0]
     assert m.all()
