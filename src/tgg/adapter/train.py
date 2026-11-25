@@ -11,7 +11,7 @@ from tgg.seed import seed_everything
 
 DEFAULTS = {"lr": 1e-3, "wd": 0.0, "batch_windows": 32, "eval_every": 200,
             "max_steps": 20000, "patience_evals": 10, "seed": 651,
-            "d": 512, "m": 64, "heads": 4, "H": 12}
+            "d": 512, "m": 64, "heads": 4, "H": 12, "val_ids": None}
 
 
 def assert_masked(m: torch.Tensor) -> None:
@@ -68,7 +68,7 @@ def train(cfg: dict) -> dict:
     seed_everything(c["seed"])
 
     train_ds = CacheDataset(c["cache_dir"], "train", c["X"], c["M"], c["train_ids"])
-    val_ds = CacheDataset(c["cache_dir"], "val", c["X"], c["M"], None)
+    val_ds = CacheDataset(c["cache_dir"], "val", c["X"], c["M"], c["val_ids"])
     train_loader = DataLoader(train_ds, batch_size=c["batch_windows"], shuffle=True,
                                collate_fn=_collate, drop_last=True)
     val_loader = DataLoader(val_ds, batch_size=c["batch_windows"], shuffle=False, collate_fn=_collate)
