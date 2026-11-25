@@ -1,0 +1,12 @@
+{
+  "verdict": "go",
+  "zero_shot_60min_val_mae": 8.216729164123535,
+  "gap_threshold_mph": 3.83,
+  "gap_exists": true,
+  "gat_60min_val_mae": 7.162739276885986,
+  "mlp_60min_val_mae": 7.213618278503418,
+  "gat_improvement_mph": 1.0539898872375488,
+  "gat_improves_enough": true,
+  "mlp_improvement_mph": 1.0031108856201172,
+  "note": null
+}
