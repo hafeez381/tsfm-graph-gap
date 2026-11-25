@@ -21,3 +21,4 @@ kaggle/code/dataset-metadata.json
 /results/skeleton/
 /results/kaggle/
 /results/**/*_preds.npz
+/results/**/alpha_test500.npz
