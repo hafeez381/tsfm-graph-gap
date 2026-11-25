@@ -31,10 +31,11 @@ class _FakePipeline:
 def test_wrap_encode_pools_only_unmasked_tokens():
     pipeline = _FakePipeline()
     bolt._wrap_encode(pipeline)
-    y0, h, loc, sd = bolt.run(pipeline, torch.zeros(3, 12))
+    y0, h, loc, sd, h_last = bolt.run(pipeline, torch.zeros(3, 12))
     assert y0.shape == (3, 12) and torch.allclose(y0, torch.zeros(3, 12))
     assert h.shape == (3, bolt.D) and torch.allclose(h, torch.ones(3, bolt.D))   # token 2 (value 2) is masked out
     assert torch.allclose(loc, torch.zeros(3)) and torch.allclose(sd, torch.ones(3))
+    assert h_last.shape == (3, bolt.D) and torch.allclose(h_last, torch.full((3, bolt.D), 2.0))
 
 
 def test_assert_frozen():
