@@ -22,8 +22,10 @@ with tarfile.open(found[0]) as tar:
 shutil.copy(os.path.join(os.path.dirname(found[0]), "COMMIT"), OUT)
 print("commit", open(os.path.join(OUT, "COMMIT")).read().strip(), flush=True)
 
-import torch  # noqa: E402  (preinstalled; its build picks the PyG wheel index, unused here but kept for parity)
-subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-e", f"{CODE}[tsfm]"], check=True)
+import torch  # noqa: E402  (preinstalled; its build picks the PyG wheel index)
+pyg = f"https://data.pyg.org/whl/torch-{torch.__version__.split('+')[0]}+{torch.version.cuda and 'cu' + torch.version.cuda.replace('.', '') or 'cpu'}.html"
+# build_data.py needs tsl (stgnn extra) to load METR-LA; build_cache.py needs chronos (tsfm extra).
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-f", pyg, "-e", f"{CODE}[stgnn,tsfm]"], check=True)
 subprocess.run(["nvidia-smi"])
 
 env = dict(os.environ, OUT_DIR=OUT, PYTHONPATH=CODE)
