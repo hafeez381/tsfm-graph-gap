@@ -1,0 +1,13 @@
+{
+  "git_sha": "3e34cc9cedcc0a0f92ca5a001a3aad5b683594ca",
+  "run_id": "gat-bolt-L12-f5-s651",
+  "cache": "bolt-L12",
+  "variant": "gat",
+  "fraction": 0.05,
+  "seed": 651,
+  "best_step": 4400,
+  "best_val_mae": 3.6617885170927402,
+  "trained_params": 37836,
+  "frozen_params": 0,
+  "wall_seconds": 580.83
+}
