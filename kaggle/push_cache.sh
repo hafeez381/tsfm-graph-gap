@@ -24,9 +24,11 @@ cat > "$dir/dataset-metadata.json" <<JSON
 {"title": "$slug", "id": "$KAGGLE_USER/$slug", "licenses": [{"name": "CC0-1.0"}], "collaborators": $collab}
 JSON
 
-if "$KAGGLE" datasets status "$KAGGLE_USER/$slug" >/dev/null 2>&1; then
-  "$KAGGLE" datasets version -p "$dir" -m "cache $name, $(git rev-parse HEAD)" -q -r zip
+# cd into the folder and pass "." rather than "$dir": a forward slash in that relative path breaks
+# the Kaggle CLI's upload temp-file naming on Windows (kaggle 2.2.5).
+if (cd "$dir" && "$KAGGLE" datasets status "$KAGGLE_USER/$slug" >/dev/null 2>&1); then
+  (cd "$dir" && "$KAGGLE" datasets version -p . -m "cache $name, $(git rev-parse HEAD)" -q -r zip)
 else
-  "$KAGGLE" datasets create -p "$dir" -q -r zip
+  (cd "$dir" && "$KAGGLE" datasets create -p . -q -r zip)
 fi
 echo "uploaded $KAGGLE_USER/$slug from $dir"

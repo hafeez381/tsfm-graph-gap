@@ -16,6 +16,6 @@ cat > "$tmp/kernel-metadata.json" <<JSON
  "enable_internet": "true", "dataset_sources": ["$KAGGLE_USER/tgg-code"],
  "competition_sources": [], "kernel_sources": [], "model_sources": []}
 JSON
-"$KAGGLE" kernels push -p "$tmp" --accelerator NvidiaTeslaT4
+(cd "$tmp" && "$KAGGLE" kernels push -p . --accelerator NvidiaTeslaT4)
 echo "status: $KAGGLE kernels status $KAGGLE_USER/tgg-$job"
 echo "output: $KAGGLE kernels output $KAGGLE_USER/tgg-$job -p results/kaggle/$job"
