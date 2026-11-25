@@ -17,10 +17,12 @@ cat > kaggle/code/dataset-metadata.json <<JSON
 {"title": "tgg-code", "id": "$KAGGLE_USER/tgg-code", "licenses": [{"name": "CC0-1.0"}]}
 JSON
 
-if "$KAGGLE" datasets status "$KAGGLE_USER/tgg-code" >/dev/null 2>&1; then
-  "$KAGGLE" datasets version -p kaggle/code -m "$sha" -q
+# cd into the folder and pass "." rather than "kaggle/code": the forward slash in that relative
+# path breaks the Kaggle CLI's upload temp-file naming on Windows (kaggle 2.2.5).
+if (cd kaggle/code && "$KAGGLE" datasets status "$KAGGLE_USER/tgg-code" >/dev/null 2>&1); then
+  (cd kaggle/code && "$KAGGLE" datasets version -p . -m "$sha" -q)
 else
-  "$KAGGLE" datasets create -p kaggle/code -q
+  (cd kaggle/code && "$KAGGLE" datasets create -p . -q)
 fi
 # Kernels attach the latest version, so wait until this one is ready before pushing a kernel.
 sleep 15

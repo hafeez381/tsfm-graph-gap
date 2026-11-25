@@ -23,6 +23,16 @@ kaggle kernels status <user>/tgg-skeleton
 kaggle kernels output <user>/tgg-skeleton -p results/kaggle/skeleton
 ```
 
+Job J6 (the Chronos-Bolt zero-shot cache) follows the same pattern, then promotes its output to a
+dataset the whole team can read:
+
+```bash
+kaggle/push_kernel.sh build-cache-bolt-l12
+kaggle kernels output <user>/tgg-build-cache-bolt-l12 -p results/kaggle/build-cache-bolt-l12
+ISRAR_KAGGLE_USER=<israr> ABDUL_KAGGLE_USER=<abdul> \
+  kaggle/push_cache.sh bolt-L12-metr results/kaggle/build-cache-bolt-l12/cache/bolt-L12
+```
+
 ## Reproducing the results
 
 ### Walking skeleton
@@ -32,6 +42,18 @@ Synthetic data through windows, a fake cache, a zero-initialised stub adapter, p
 ```bash
 PYTHONPATH=. .venv/bin/python -m scripts.skeleton
 ```
+
+### Chronos-Bolt zero-shot and cache (C6)
+
+The frozen Chronos-Bolt Small encoder, run once per window: a cache of its pooled embedding and
+0.5-quantile forecast for every window (Decisions 1, 5, 6, 9), and the zero-shot test predictions.
+
+```bash
+PYTHONPATH=. .venv/bin/python -m scripts.build_cache --mode smoke --out /tmp/cache --results /tmp/results
+```
+
+`--mode full --split {train,val,test,all} --device cuda` builds the real cache from `data/metr_la*`
+(built by `scripts.build_data` first) and is the body of the `build-cache-bolt-l12` Kaggle job above.
 
 ## Attribution
 
