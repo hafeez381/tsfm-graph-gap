@@ -1,0 +1,27 @@
+{
+  "bolt-L12": {
+    "trend_r2": 0.9989394545555115,
+    "trend_alpha": 0.1,
+    "level_r2": 0.31712841987609863,
+    "level_alpha": 0.1
+  },
+  "bolt-L288-mean": {
+    "trend_r2": 0.6635541915893555,
+    "trend_alpha": 0.1,
+    "level_r2": 0.8857854008674622,
+    "level_alpha": 0.1,
+    "warning": "level R^2 >= trend R^2: the embedding may not be scale-free as assumed"
+  },
+  "bolt-L288-h_last": {
+    "trend_r2": 0.9684512615203857,
+    "trend_alpha": 0.1,
+    "level_r2": 0.8844199776649475,
+    "level_alpha": 0.1
+  },
+  "timesfm-L12": {
+    "trend_r2": 0.7295371294021606,
+    "trend_alpha": 0.1,
+    "level_r2": 0.29260343313217163,
+    "level_alpha": 100
+  }
+}
