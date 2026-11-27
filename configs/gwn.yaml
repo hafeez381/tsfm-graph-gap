@@ -1,0 +1,30 @@
+# Graph WaveNet configuration (guide C13, Decision 12). tsl's own defaults, made explicit for traceability.
+model:
+  input_size: 2            # z-scored speed, time of day
+  output_size: 1
+  horizon: 12
+  hidden_size: 32
+  ff_size: 256
+  n_layers: 8
+  temporal_kernel_size: 2
+  spatial_kernel_size: 2
+  learned_adjacency: true
+  emb_size: 10
+  dilation: 2
+  dilation_mod: 2
+  norm: batch
+  dropout: 0.3
+
+train:
+  opt: adam
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  batch_windows: 64
+  loss: masked_mae_all_horizons
+  max_epochs: 100
+  patience_epochs: 20        # inferred, unverified (Decision 12)
+  select: best_validation_mae
+
+check:
+  mae_h12_at_f100_max: 3.88   # 3.53 + 10% (Decision 12 enforcement point)
+  published_mae: {h3: 2.69, h6: 3.07, h12: 3.53}
