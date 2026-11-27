@@ -14,10 +14,13 @@ def vault_root(path):
     start = os.path.dirname(os.path.abspath(path))
     for marker in (".obsidian", ".git"):
         d = start
-        while d != "/":
+        while True:
             if os.path.isdir(os.path.join(d, marker)):
                 return d
-            d = os.path.dirname(d)
+            parent = os.path.dirname(d)
+            if parent == d:
+                break
+            d = parent
     return start
 
 def headings(path):
@@ -30,13 +33,14 @@ def strip_code(t):
 
 def main(files):
     V = vault_root(files[0])
-    allf = [os.path.join(r, f) for r, _, fs in os.walk(V) if "/.trash" not in r and "/.obsidian" not in r for f in fs]
+    allf = [os.path.join(r, f) for r, _, fs in os.walk(V)
+            if os.sep + ".trash" not in r and os.sep + ".obsidian" not in r for f in fs]
     def find(name, src):
         if "/" in name:
             for base in (os.path.dirname(src), V):
                 for c in (os.path.join(base, name), os.path.join(base, name + ".md")):
                     if os.path.isfile(c): return c
-        hits = [p for p in allf if p.endswith("/" + name) or p.endswith("/" + name + ".md")]
+        hits = [p for p in allf if p.endswith(os.sep + name) or p.endswith(os.sep + name + ".md")]
         return hits[0] if hits else None
     bad = 0
     for src in files:
