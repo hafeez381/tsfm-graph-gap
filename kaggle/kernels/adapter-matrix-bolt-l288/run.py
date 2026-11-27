@@ -40,7 +40,7 @@ for split in ("train", "val", "test"):
     hit = glob.glob(f"/kaggle/input/*cache-bolt-l288-{split}*")
     if len(hit) != 1:
         sys.exit(f"expected exactly one bolt-L288 {split} cache dataset, found {hit}")
-    os.symlink(os.path.join(hit[0], split), os.path.join(cache_root, "bolt-L288", split))
+    os.symlink(hit[0], os.path.join(cache_root, "bolt-L288", split))
 
 results = subprocess.run(
     [sys.executable, "-u", "-m", "scripts.run_adapter_matrix", "--cache", "bolt-L288",
