@@ -1,5 +1,6 @@
 """Kaggle entry point for job J15: three adapter variants at 100% on timesfm-L12 (guide C16).
-Pulls the cache from its own dataset instead of rebuilding it.
+Rebuilds the cache itself (as job J9 did): quick enough on a T4 that uploading it as a separate
+dataset first is not worth the network time.
 
 Fetch the output with `kaggle kernels output <user>/tgg-adapter-matrix-timesfm-l12
 -p results/kaggle/adapter-matrix-timesfm-l12`.
@@ -24,7 +25,7 @@ print("commit", open(os.path.join(OUT, "COMMIT")).read().strip(), flush=True)
 
 import torch  # noqa: E402
 pyg = f"https://data.pyg.org/whl/torch-{torch.__version__.split('+')[0]}+{torch.version.cuda and 'cu' + torch.version.cuda.replace('.', '') or 'cpu'}.html"
-subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-f", pyg, "-e", f"{CODE}[stgnn]"], check=True)
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-f", pyg, "-e", f"{CODE}[stgnn,tsfm]"], check=True)
 subprocess.run(["nvidia-smi"])
 
 env = dict(os.environ, OUT_DIR=OUT, PYTHONPATH=CODE)
@@ -34,13 +35,13 @@ build_data = subprocess.run([sys.executable, "-u", "-m", "scripts.build_data", "
 if build_data.returncode:
     sys.exit(build_data.returncode)
 
-cache_input = glob.glob("/kaggle/input/*cache-timesfm-l12-metr*")
-if len(cache_input) != 1:
-    sys.exit(f"expected exactly one timesfm-L12 cache dataset under /kaggle/input, found {cache_input}")
 cache_root = os.path.join(OUT, "cache")
-os.makedirs(os.path.join(cache_root, "timesfm-L12"), exist_ok=True)
-for split in ("train", "val", "test"):
-    os.symlink(os.path.join(cache_input[0], split), os.path.join(cache_root, "timesfm-L12", split))
+build_cache = subprocess.run(
+    [sys.executable, "-u", "-m", "scripts.build_cache_timesfm", "--mode", "full",
+     "--data", data_dir, "--out", cache_root, "--results", os.path.join(OUT, "results")],
+    cwd=CODE, env=env)
+if build_cache.returncode:
+    sys.exit(build_cache.returncode)
 
 results = subprocess.run(
     [sys.executable, "-u", "-m", "scripts.run_adapter_matrix", "--cache", "timesfm-L12",
